@@ -1,14 +1,12 @@
-# definitions:
-#   steps:
-#     - step: &ESlint
-#       name: eslint
-#       runs-on: 
-#         - 'self.hosted'
-#         - 'ubuntu-latest'
-#       script:
-#           - npm install
-#           - npm run build
-#           - npm run generate
+definitions:
+  steps:
+    - step: &ESLint
+        name: eslint
+        script:
+          - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+          - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
+          - npm install
+          - npm run lint
     # - step: &Build
     #     name: builds
     #     image: node:18-alpine
@@ -25,16 +23,17 @@ pipelines:
           - echo "This script runs on all branches that don't have any specific pipeline assigned in 'branches'."
   branches:
     master:
-      - step:
-          name: ESLint
-          script:
-            - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-            - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
-            - npm install
-            - npm run lint
+      - step: *ESLint
+      # - step:
+      #     name: ESLint
+      #     script:
+      #       - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+      #       - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
+      #       - npm install
+      #       - npm run lint
       # - step: *Build
-#   tags:
-#     stage-*:
-#       - step: *Build
+  tags:
+    stage-*:
+      - step: *ESLint
 #     prod-*:
 #       - step: *Build
