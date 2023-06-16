@@ -22,7 +22,7 @@ pipelines:
   branches:
     master:
       - step: *ESLint
-      - step: *ESLint
+      - step: *Prettier
   tags:
     stage-*:
       - step: *ESLint
