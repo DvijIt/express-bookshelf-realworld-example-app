@@ -7,15 +7,13 @@ definitions:
           - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
           - npm install
           - npm run lint
-    # - step: &Build
-    #     name: builds
-    #     image: node:18-alpine
-    #     caches:
-    #       - node
-    #     script:
-    #       - npm install
-    #       - npm run build
-    #       - npm run generate
+    - step: &Prettier
+        name: prettier
+        script:
+          - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+          - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
+          - npm install
+          - npm run lint
 pipelines:
   default:
     - step:
@@ -24,16 +22,7 @@ pipelines:
   branches:
     master:
       - step: *ESLint
-      # - step:
-      #     name: ESLint
-      #     script:
-      #       - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-      #       - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
-      #       - npm install
-      #       - npm run lint
-      # - step: *Build
+      - step: *ESLint
   tags:
     stage-*:
       - step: *ESLint
-#     prod-*:
-#       - step: *Build
