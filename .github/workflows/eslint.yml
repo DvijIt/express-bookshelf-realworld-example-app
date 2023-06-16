@@ -21,17 +21,3 @@ jobs:
         run: npm install
       - name: Lint source code with eslint
         run: npm run lint
-  prettier:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install nvm
-        run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-      - name: Install node.js
-        env:
-          NODE_VERSION: 16.15.0
-        run: export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install
-      - name: Install dependencies
-        run: npm install
-      - name: Prettify our source code with Prettier
-        run: npm run prettier
