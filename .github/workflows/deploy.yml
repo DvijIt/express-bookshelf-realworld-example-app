@@ -10,16 +10,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup SSH
         run: |
           # создаем директорию для ключа
           mkdir -p ~/.ssh
           # выводим содержимое нашей переменной окружения в файл удалив перенос строки в конце
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | > ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | > ~/.ssh/free-aws-sshkey.pem
           # ставим нужные безопасные права
           chmod 700 ~/.ssh
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/free-aws-sshkey.pem
           # Добавляет отпечаток сервера
           ssh-keyscan -H "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
         env:
