@@ -23,17 +23,17 @@ jobs:
     # укажем, что для этой job нам нужен специальный контейнер
     container:
       # возьмем Docker образ Node.js из публичного реестра
-      image: node:14.17.0-alpine
+      image: node:16.15.0-alpine
     # последовательные задачи (шаги), важно помнить, что переменные окружения не сохраняются
     # между шагами и их нужно пробрасывать, если требуется.
     steps:
       # указываем action, который будет запущен как часть job
       # В текущем случае это клонирование репозитория
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Кеширование npm
       - name: Cache dependencies
         # включаем специальный action
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         # передаем параметры
         with:
           # что кешировать (путь)
@@ -56,17 +56,17 @@ jobs:
     # укажем, что для этой job нам нужен специальный контейнер
     container:
       # возьмем Docker образ Node.js из публичного реестра
-      image: node:14.17.0-alpine
+      image: node:16.15.0-alpine
     # последовательные задачи (шаги), важно помнить, что переменные окружения не сохраняются
     # между шагами и их нужно пробрасывать, если требуется.
     steps:
       # указываем action, который будет запущен как часть job
       # В текущем случае это клонирование репозитория
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # Кеширование npm
       - name: Cache dependencies
         # включаем специальный action
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         # передаем параметры
         with:
           # что кешировать (путь)
