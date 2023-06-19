@@ -7,7 +7,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     container:
-      image: node:14.19.0-alpine
+      image: node:16-alpine
     steps:
       - name: Install git
         run: apk --update add git tar
@@ -24,7 +24,7 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
     container:
-      image: node:14.19.0-alpine
+      image: node:16-alpine
     steps:
       - name: Install git
         run: apk --update add git tar
@@ -41,7 +41,7 @@ jobs:
     name: Prettier
     runs-on: ubuntu-latest
     container:
-      image: node:14.19.0-alpine
+      image: node:16-alpine
     steps:
       - name: Install git
         run: apk --update add git tar
