@@ -2,23 +2,17 @@ definitions:
   steps:
     - step: &ESLint
         name: eslint
+        image: node:16.15.0-alpine
         script:
-          - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-          - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
           - npm install
           - npm run lint
     - step: &Prettier
+        image: node:16.15.0-alpine
         name: prettier
         script:
-          - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-          - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install 16.15.0
           - npm install
           - npm run lint
 pipelines:
-  default:
-    - step:
-        script:
-          - echo "This script runs on all branches that don't have any specific pipeline assigned in 'branches'."
   branches:
     master:
       - step: *ESLint
