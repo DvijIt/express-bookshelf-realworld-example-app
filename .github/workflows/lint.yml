@@ -14,12 +14,12 @@ jobs:
       image: node:16.15.0-alpine
     steps:
       - uses: actions/checkout@v3
-      # - name: Cache dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.npm
-      #     key: npm-${{ hashFiles('package-lock.json') }}
-      #     restore-keys: npm-
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - name: Install dependencies
         run: npm install
       - name: Lint source code with eslint
@@ -30,12 +30,12 @@ jobs:
       image: node:16.15.0-alpine
     steps:
       - uses: actions/checkout@v3
-      # - name: Cache dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.npm
-      #     key: npm-${{ hashFiles('package-lock.json') }}
-      #     restore-keys: npm-
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - name: Install dependencies
         run: npm install
       - name: Prettify our source code with Prettier
