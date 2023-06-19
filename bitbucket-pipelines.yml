@@ -3,12 +3,16 @@ definitions:
     - step: &ESLint
         name: eslint
         image: node:16.15.0-alpine
+        caches:
+          - node
         script:
           - npm install
           - npm run lint
     - step: &Prettier
         image: node:16.15.0-alpine
         name: prettier
+        caches:
+          - node
         script:
           - npm install
           - npm run lint
