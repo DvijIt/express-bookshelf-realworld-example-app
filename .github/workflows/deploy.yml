@@ -28,7 +28,7 @@ jobs:
       - name: Copy files to the server
         # заливаем файлы при помощи rsync
         run: |
-          rsync -rave "ssh -i free-aws-sshkey.pem" -a --progress --human-readable --delete \
+          rsync -rave "ssh -i ~/.ssh/free-aws-sshkey.pem" -a --progress --human-readable --delete \
           --exclude-from '.gitignore' \
           --exclude .gitignore \
           --exclude .git \
