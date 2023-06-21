@@ -30,12 +30,12 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy files to the server
-        run: echo ls -a ~/.ssh
-          # rsync -avz "ssh -i ~/.ssh/free-aws-sshkey.pem" --progress --human-readable --delete \
-          # --exclude-from '.gitignore' \
-          # --exclude .gitignore \
-          # --exclude .git \
-          # . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
+        run: ls -a ~/.ssh && 
+              rsync -avz "ssh -i ~/.ssh/free-aws-sshkey.pem" --progress --human-readable --delete
+              --exclude-from '.gitignore'
+              --exclude .gitignore
+              --exclude .git
+              . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }}
