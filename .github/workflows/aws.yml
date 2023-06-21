@@ -1,0 +1,43 @@
+name: Deploy EC2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install SSH key
+        run: |
+          # создаем директорию для ключа
+          mkdir -p ~/.ssh
+          # выводим содержимое нашей переменной окружения в файл
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/free-aws-sshkey.pem
+          # ставим нужные безопасные права
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/free-aws-sshkey.pem
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          #SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Adding Known Hosts
+          
+        run: |
+          # Добавляем отпечаток сервера
+          # echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.SSH_HOST }}{% endraw%} >> ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          #SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          #SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Copy files to the server
+        run: |
+          rsync -a -r --progress --human-readable --delete \
+          --exclude-from '.gitignore' \
+          --include-from .deploylist \
+          --exclude public \
+          --exclude ecosystem.config.js \
+          . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
