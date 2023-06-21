@@ -16,11 +16,24 @@ definitions:
         script:
           - npm install
           - npm run lint
+    - step: &Rsync
+        image: node:16.15.0-alpine
+        name: rsync
+        script:
+          - pipe: atlassian/rsync-deploy:0.8.1
+            variables:
+              USER: 'deploy'
+              SERVER: '16.16.239.138'
+              REMOTE_PATH: '~/app/app_test_folder/'
+              LOCAL_PATH: 'bin'
+              SSH_KEY: $SSH_PRIVATE_KEY
+              DEBUG: 'true'
 pipelines:
   branches:
     master:
-      - step: *ESLint
-      - step: *Prettier
+      - step: *Rsync
+      # - step: *ESLint
+      # - step: *Prettier
   tags:
     stage-*:
       - step: *ESLint
