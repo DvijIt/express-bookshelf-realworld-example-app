@@ -40,3 +40,6 @@ jobs:
           --exclude .gitignore \
           --exclude .git \
           . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
