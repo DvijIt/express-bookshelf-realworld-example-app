@@ -35,11 +35,11 @@ jobs:
           #SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
       - name: Copy files to the server
         run: |
-          rsync -a -r --progress --human-readable --delete \
+          rsync -a -r "ssh -i $SSH_PRIVATE_KEY"" --progress --human-readable --delete \
           --exclude-from '.gitignore' \
           --exclude .gitignore \
           --exclude .git \
-          . $ubuntu@16.16.239.138:~/realworld/
+          . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
