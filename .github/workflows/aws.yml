@@ -31,7 +31,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy files to the server
         run: |
-          rsync -avz "ssh -i $SSH_PRIVATE_KEY" --progress --human-readable --delete \
+          rsync -avz "ssh -i ~/.ssh/free-aws-sshkey.pem" --progress --human-readable --delete \
           --exclude-from '.gitignore' \
           --exclude .gitignore \
           --exclude .git \
