@@ -34,7 +34,7 @@ jobs:
               --exclude-from '.gitignore'
               --exclude .gitignore
               --exclude .git
-              . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
+              . $SSH_USER@$SSH_HOST:~/new_folder/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }}
