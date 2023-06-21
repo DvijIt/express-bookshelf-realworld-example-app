@@ -16,7 +16,7 @@ jobs:
           # создаем директорию для ключа
           mkdir -p ~/.ssh
           # выводим содержимое нашей переменной окружения в файл
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/free-aws-sshkey.pem
+          echo "$SSH_PRIVATE_KEY" >> ~/.ssh/free-aws-sshkey.pem
           # ставим нужные безопасные права
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/free-aws-sshkey.pem
