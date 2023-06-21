@@ -31,7 +31,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy files to the server
         run: |
-          rsync -a -r "ssh -i $SSH_PRIVATE_KEY"" --progress --human-readable --delete \
+          rsync -a -r "ssh -i $SSH_PRIVATE_KEY" --progress --human-readable --delete \
           --exclude-from '.gitignore' \
           --exclude .gitignore \
           --exclude .git \
@@ -39,4 +39,4 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
