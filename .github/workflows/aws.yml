@@ -16,10 +16,10 @@ jobs:
           # створюємо директорию для ключа
           mkdir -p ~/.ssh
           # виводимо содержимое нашей переменной окружения в файл
-          echo $SSH_PRIVATE_KEY | base64 -d > ~/.ssh/free-aws-sshkey.pem
+          echo $SSH_PRIVATE_KEY | base64 -d > ~/.ssh/id_rsa
           # ставим нужные безопасные права
           chmod 700 ~/.ssh
-          chmod 600 ~/.ssh/free-aws-sshkey.pem
+          chmod 600 ~/.ssh/id_rsa
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Adding Known Hosts
@@ -30,7 +30,7 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy files to the server
-        run: rsync -avz "ssh -i ~/.ssh/free-aws-sshkey.pem" --progress --human-readable --delete
+        run: rsync -a -r --progress --human-readable --delete
               --exclude-from '.gitignore'
               --exclude .gitignore
               --exclude .git
