@@ -20,6 +20,7 @@ jobs:
           # ставим нужные безопасные права
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/free-aws-sshkey.pem
+          cat ~/.ssh/free-aws-sshkey.pem
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Adding Known Hosts
