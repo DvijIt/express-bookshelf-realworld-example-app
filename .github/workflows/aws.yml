@@ -37,7 +37,6 @@ jobs:
         run: |
           rsync -a -r --progress --human-readable --delete \
           --exclude-from '.gitignore' \
-          --include-from .deploylist \
-          --exclude public \
-          --exclude ecosystem.config.js \
+          --exclude .gitignore \
+          --exclude .git \
           . $SSH_USER@$SSH_HOST:~/app/app_test_folder/
