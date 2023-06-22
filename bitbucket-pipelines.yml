@@ -20,14 +20,17 @@ definitions:
         image: node:16.15.0-alpine
         name: rsync
         script:
-          - pipe: atlassian/rsync-deploy:0.8.1
-            variables:
-              USER: 'deploy'
-              SERVER: '16.16.239.138'
-              REMOTE_PATH: '~/app/app_test_folder/'
-              LOCAL_PATH: 'bin'
-              SSH_KEY: $SSH_PRIVATE_KEY
-              DEBUG: 'true'
+          - mkdir -p ~/.ssh
+          - echo $SSH_PRIVATE_KEY | base64 -d > ~/.ssh/id_rsa
+          - chmod 700 ~/.ssh
+          - chmod 600 ~/.ssh/id_rsa
+          - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+          - rsync -a -r --progress --human-readable --delete
+              --exclude-from '.gitignore'
+              --exclude .gitignore
+              --exclude .git
+              . $SSH_USER@$SSH_HOST:~/bitb_new_folder/
+       
 pipelines:
   branches:
     master:
