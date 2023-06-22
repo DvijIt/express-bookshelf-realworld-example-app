@@ -17,9 +17,11 @@ definitions:
           - npm install
           - npm run lint
     - step: &Rsync
-        image: ubuntu-latest
+        image: node:16.15.0-alpine
         name: rsync
         script:
+          - apt-get update -y
+          - apt-get install -y ssh
           - mkdir -p ~/.ssh
           - echo $SSH_PRIVATE_KEY | base64 -d > ~/.ssh/id_rsa
           - chmod 700 ~/.ssh
