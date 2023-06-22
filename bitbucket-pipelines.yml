@@ -17,7 +17,7 @@ definitions:
           - npm install
           - npm run lint
     - step: &Rsync
-        image: node:16.15.0-alpine
+        image: ubuntu-latest
         name: rsync
         script:
           - mkdir -p ~/.ssh
