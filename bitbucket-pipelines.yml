@@ -17,7 +17,7 @@ definitions:
           - npm install
           - npm run lint
     - step: &Rsync
-        image: node:16.15.0-alpine
+        image: atlassian/default-image:4
         name: rsync
         script:
           - apt-get update -y
