@@ -29,13 +29,12 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy files to the server
-        run: |
-          rsync -a -r --progress --human-readable --delete
-          --exclude-from '.gitignore'
-          --exclude .gitignore
-          --exclude .git
-          --exclude public \
-          . $SSH_USER@$SSH_HOST:~/realworld/
+        run: rsync -a -r --progress --human-readable --delete
+              --exclude-from '.gitignore'
+              --exclude .gitignore
+              --exclude .git
+              --exclude public
+              . $SSH_USER@$SSH_HOST:~/realworld/
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
