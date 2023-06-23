@@ -23,19 +23,25 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Adding Known Hosts
-          
         run: |
           # Добавляем отпечаток сервера
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
       - name: Copy files to the server
-        run: rsync -a -r --progress --human-readable --delete
-              --exclude-from '.gitignore'
-              --exclude .gitignore
-              --exclude .git
-              . $SSH_USER@$SSH_HOST:~/new_folder/
+        run: |
+          rsync -a -r --progress --human-readable --delete
+          --exclude-from '.gitignore'
+          --exclude .gitignore
+          --exclude .git
+          --exclude public \
+          . $SSH_USER@$SSH_HOST:~/realworld/
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+      - name: Restart the application
+        run: |
+          ssh $SSH_USER@$SSH_HOST "pushd ~/realworld && npm install && popd && pm2 restart ecosystem.config.js"
+        env:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_HOST: ${{ secrets.SSH_HOST }}

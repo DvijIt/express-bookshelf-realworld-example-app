@@ -30,7 +30,7 @@ definitions:
               --exclude-from '.gitignore'
               --exclude .gitignore
               --exclude .git
-              . $SSH_USER@$SSH_HOST:~/bitb_new_folder/
+              . $SSH_USER@$SSH_HOST:~/realworld/
        
 pipelines:
   branches:
