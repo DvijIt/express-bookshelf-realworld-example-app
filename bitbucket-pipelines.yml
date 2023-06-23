@@ -22,7 +22,7 @@ definitions:
         script:
           - apt-get update && apt-get install -y rsync
           - mkdir -p ~/.ssh
-          - echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
+          - echo -n "$SSH_PRIVATE_KEY" | base64 --d > ~/.ssh/id_rsa
           - chmod 700 ~/.ssh
           - chmod 600 ~/.ssh/id_rsa
           - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
