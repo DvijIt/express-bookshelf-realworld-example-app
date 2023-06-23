@@ -25,6 +25,8 @@ definitions:
           - chmod 700 ~/.ssh
           - chmod 600 ~/.ssh/id_rsa
           - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+          - sudo apt update
+          - sudo apt install rsync
           - rsync -a -r --progress --human-readable --delete
               --exclude-from '.gitignore'
               --exclude .gitignore
