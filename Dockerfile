@@ -1,9 +1,15 @@
-FROM node:16.15.0
-RUN mkdir -p /home/node/app/_coverage && chown -R node:node /home/node/app
-WORKDIR /home/node/app
-COPY --chown=node:node package*.json ./
-RUN npm ci
-COPY --chown=node:node . .
+FROM node:14.17.0-alpine
+
+RUN npm install -g npm@latest
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json ./
+RUN npm install
+
+COPY . .
+
 EXPOSE 3000
-USER node
+
 CMD [ "./bin/start.sh" ]
