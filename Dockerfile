@@ -1,4 +1,4 @@
-FROM node:14.17.0-alpine
+FROM node:16.15.0-alpine
 
 RUN npm install -g npm@latest
 
@@ -8,8 +8,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . .
+COPY . /usr/src/app
 
 EXPOSE 3000
 
-CMD [ "./bin/start.sh" ]
+CMD [ "sh" ]

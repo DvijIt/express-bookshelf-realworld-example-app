@@ -1,67 +1,99 @@
-definitions:
-  steps:
-    - step: &ESLint
-        name: eslint
-        image: node:16.15.0-alpine
-        caches:
-          - node
-        script:
-          - npm install
-          - npm run lint
-    - step: &Prettier
-        image: node:16.15.0-alpine
-        name: prettier
-        caches:
-          - node
-        script:
-          - npm install
-          - npm run lint
-    - step: &Rsync
-        image: atlassian/default-image:4
-        name: rsync
-        script:
-          - apt-get update && apt-get install -y rsync
-          - mkdir -p ~/.ssh
-          - echo -n "$SSH_PRIVATE_KEY" | base64 --d > ~/.ssh/id_rsa
-          - chmod 700 ~/.ssh
-          - chmod 600 ~/.ssh/id_rsa
-          - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-          - rsync -a -r --progress --human-readable --delete
-              --exclude-from '.gitignore'
-              --exclude .gitignore
-              --exclude .git
-              . $SSH_USER@$SSH_HOST:~/realworld/
-    - step: &Build
-        image: node:16.15.0-alpine
-        caches:
-          - node
-        script:
-          - npm install
-          - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-          - docker build -t itdvij/realworld:$BITBUCKET_COMMIT .
-          - docker push itdvij/realworld:$BITBUCKET_COMMIT
-        services:
-          - docker
-    - step: &Deploy
-        image: node:16.15.0-alpine
-        runs-on:
-          - self.hosted
-        services:
-          - docker
-        script:
-          - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-          - docker pull itdvij/realworld:$BITBUCKET_COMMIT
-          - docker-compose up -d
-        
-       
+image: node:16.15.0-alpine
+
+options:
+  docker: true
+
 pipelines:
   branches:
     master:
-      - step: *Build
-      - step: *Deploy
-      # - step: *Rsync
-      # - step: *ESLint
-      # - step: *Prettier
-  tags:
-    stage-*:
-      - step: *ESLint
+      - step:
+          name: Build
+          caches:
+            - node
+          script:
+            - export IMAGE_NAME=itdvij/realworld:$BITBUCKET_COMMIT
+            - npm install
+            - npm run build
+            - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+            - docker build -t $IMAGE_NAME .
+            - docker push $IMAGE_NAME
+          artifacts:
+           - build
+      - step:
+          name: Deploy
+          deployment: production
+          script:
+            - sed -i "s|{{image}}|itdvij/realworld:$BITBUCKET_COMMIT|g" deployment.yml
+            - pipe: atlassian/kubectl-run:1.1.2
+              variables:
+                KUBE_CONFIG: $KUBE_CONFIG
+                KUBECTL_COMMAND: 'apply'
+                RESOURCE_PATH: 'deployment.yml'
+
+# definitions:
+#   steps:
+#     - step: &ESLint
+#         name: eslint
+#         image: node:16.15.0-alpine
+#         caches:
+#           - node
+#         script:
+#           - npm install
+#           - npm run lint
+#     - step: &Prettier
+#         image: node:16.15.0-alpine
+#         name: prettier
+#         caches:
+#           - node
+#         script:
+#           - npm install
+#           - npm run lint
+#     - step: &Rsync
+#         image: atlassian/default-image:4
+#         name: rsync
+#         script:
+#           - apt-get update && apt-get install -y rsync
+#           - mkdir -p ~/.ssh
+#           - echo -n "$SSH_PRIVATE_KEY" | base64 --d > ~/.ssh/id_rsa
+#           - chmod 700 ~/.ssh
+#           - chmod 600 ~/.ssh/id_rsa
+#           - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+#           - rsync -a -r --progress --human-readable --delete
+#               --exclude-from '.gitignore'
+#               --exclude .gitignore
+#               --exclude .git
+#               . $SSH_USER@$SSH_HOST:~/realworld/
+#     - step: &Build
+#         image: node:16.15.0-alpine
+#         caches:
+#           - node
+#         script:
+#           - npm install
+#           - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+#           - docker build -t itdvij/realworld:$BITBUCKET_COMMIT .
+#           - docker push itdvij/realworld:$BITBUCKET_COMMIT
+#         services:
+#           - docker
+#     - step: &Deploy
+#         image: node:16.15.0-alpine
+#         runs-on:
+#           - self.hosted
+#         services:
+#           - docker
+#         script:
+#           - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+#           - docker pull itdvij/realworld:$BITBUCKET_COMMIT
+#           - docker-compose up -d
+        
+       
+# pipelines:
+#   branches:
+#     master:
+#       - step: *Build
+#       - step: *Deploy
+#       # - step: *Rsync
+#       # - step: *ESLint
+#       # - step: *Prettier
+#   tags:
+#     stage-*:
+#       - step: *ESLint
