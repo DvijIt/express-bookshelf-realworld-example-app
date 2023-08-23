@@ -57,7 +57,7 @@ definitions:
 pipelines:
   branches:
     master:
-      # - step: *Build
+      - step: *Build
       - step: *Deploy
       # - step: *Rsync
       # - step: *ESLint
