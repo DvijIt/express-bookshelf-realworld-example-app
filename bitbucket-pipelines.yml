@@ -52,6 +52,8 @@ definitions:
           - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           - scp -r docker-compose.yml $SSH_USER@$SSH_HOST:~/realworld/
           - ssh $SSH_USER@$SSH_HOST
+          - pwd
+          - ls
           - cd ~/realworld/
           - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
           - docker pull -t itdvij/realworld:$BITBUCKET_COMMIT .
@@ -63,7 +65,7 @@ definitions:
 pipelines:
   branches:
     master:
-      - step: *Build
+      # - step: *Build
       - step: *Deploy
       # - step: *Rsync
       # - step: *ESLint
