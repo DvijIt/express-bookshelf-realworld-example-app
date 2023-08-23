@@ -43,6 +43,7 @@ definitions:
         services:
           - docker
     - step: &Deploy
+        image: atlassian/default-image:4
         script:
           - mkdir -p ~/.ssh
           - echo -n "$SSH_PRIVATE_KEY" | base64 --d > ~/.ssh/id_rsa
