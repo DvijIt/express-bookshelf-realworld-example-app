@@ -43,13 +43,14 @@ definitions:
         services:
           - docker
     - step: &Deploy
-        runs-on: 
+        image: node:16.15.0-alpine
+        runs-on:
           - self.hosted
         services:
           - docker
         script:
           - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
-          - docker pull -t itdvij/realworld:$BITBUCKET_COMMIT .
+          - docker pull itdvij/realworld:$BITBUCKET_COMMIT .
           - docker-compose up -d
         
        
