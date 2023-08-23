@@ -8,8 +8,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . /usr/src/app
+COPY . .
 
 EXPOSE 3000
 
-CMD [ "sh" ]
+CMD [ "./bin/start.sh" ]

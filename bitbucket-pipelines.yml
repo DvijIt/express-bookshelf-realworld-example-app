@@ -13,12 +13,9 @@ pipelines:
           script:
             - export IMAGE_NAME=itdvij/realworld:$BITBUCKET_COMMIT
             - npm install
-            - npm run build
             - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
             - docker build -t $IMAGE_NAME .
             - docker push $IMAGE_NAME
-          artifacts:
-           - build
       - step:
           name: Deploy
           deployment: production
