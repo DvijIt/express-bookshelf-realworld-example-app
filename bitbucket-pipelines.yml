@@ -31,6 +31,7 @@ definitions:
               --exclude .gitignore
               --exclude .git
               . $SSH_USER@$SSH_HOST:~/realworld/
+          - ssh $SSH_USER@$SSH_HOST "pushd ~/realworld && npm install && popd && pm2 restart ecosystem.config.js"
        
 pipelines:
   branches:
